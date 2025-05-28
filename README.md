@@ -1,13 +1,15 @@
 # P4IS-Project
 Developing a project for the Programming for Information Systems course. 
 
-Company Name: Bangladesh Submarine Cables PLC
+Company Name: Bangladesh Submarine Cables PLC (BSCPLC)
 URL: https://bscplc.com.bd/
 
 Company Description:
 BSCPLC is primarily the only Submarine Cable operator connecting the country to the rest of the world. It is the member SEA-ME-WE-4, 5, and 6 (to be connected).
 
-BSCPLC started the journey of providing IP transit connectivity services from 1st July 2013, aiming to facilitate the pace of building a prosperous and flourishing Bangladesh. BSCPLC has been providing quality IP bandwidth to IIG operators as ILDC operator and ISP customers as IIG operator. To provide this quality IP bandwidth, BSCPLC has deployed routers at Equnix in Singapore and has connected with global Tier-1 Internet Service Providers and regional Tier-1 Internet Service Providers based on customer needs. BSCPLC's Autonomous System AS-132602 is connected to around 200 (Autonomous System) networks around the world. BSCPLC has interconnectivity of 100 Gbps, 40 Gbps, or 10 Gbps, with all these networks based on the requirement. BSCPLC ensured uninterrupted bandwidth supply to its IP transit customers through two submarine cables landing at two different locations and offering the best price. We guarantee the speedy delivery of seamless service, along with simplifying the process of selling our products.
+BSCPLC started the journey of providing IP transit connectivity services (Internet Service Provider) from 1st July 2013 in Bangladesh. BSCPLC has been providing quality IP bandwidth to International Internet Gateway (IIG) operators under its ILDC operator license and ISP customers under an IIG operator license. 
+
+To provide this quality Internet bandwidth, BSCPLC has deployed its Network Devices at Equnix in Singapore and has connected with global Tier-1 Internet Service Providers and regional Tier-1 Internet Service Providers based on customer needs. BSCPLC's Autonomous System AS-132602 is connected to around 200 (Autonomous System) networks around the world. BSCPLC has interconnectivity of 100 Gbps, 40 Gbps, or 10 Gbps, with all these networks based on the requirement. BSCPLC ensured uninterrupted bandwidth supply to its IP transit customers through two submarine cables landing at two different locations and offering the best price. We guarantee the speedy delivery of seamless service, along with simplifying the process of selling our products.
 
 The company is committed to providing 24/7 technical support provided by our skilled Network Operations Center to simplify customers' network operations to ensure customer satisfaction.
 
