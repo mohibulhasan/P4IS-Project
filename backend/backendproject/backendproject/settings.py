@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'backendApp',  # My app name
+    'rest_framework',  # Django REST Framework 
+    'corsheaders',  # for CORS headers
 ]
 
 MIDDLEWARE = [
@@ -47,7 +50,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # for using CORS headers
 ]
+
+REST_FRAMEWORK = {'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny']} 
+
+CORS_ORIGIN_ALLOW_ALL = True  # to allow all origins, or specify allowed origins
 
 ROOT_URLCONF = 'backendproject.urls'
 
