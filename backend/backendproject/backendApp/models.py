@@ -8,5 +8,5 @@ class Employee(models.Model):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     department = models.CharField(max_length=50, blank=True, null=True)
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+    # def __str__(self):
+    #     return f"{self.first_name} {self.last_name}"
