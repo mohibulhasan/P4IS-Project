@@ -19,7 +19,7 @@ class App extends React.Component {
     }
   render() {
     return (
-      <div>
+      <div className='Container' style={{ padding: '40px' }}>
         <h1>Bangladesh Submarine Cables PLC</h1>
         <hr />
         <ul>
