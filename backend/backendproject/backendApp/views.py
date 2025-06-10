@@ -14,9 +14,7 @@ class ReactView(CreateAPIView):
         employees = Employee.objects.all()
         serializer = ReactSerializer(employees, many=True)
         return Response(serializer.data, status=200)  
-        
     
-
     def post(self, request):
         serializer = ReactSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
