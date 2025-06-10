@@ -9,13 +9,13 @@ class App extends React.Component {
 
   componentDidMount() {
 
-    let data;
-    axios.get('http://localhost:8000')
+    axios.get('http://localhost:8000/employees/')
       .then(response => {
-        data = response.data;
-        this.setState({ details: data });
+        this.setState({ details: response.data }); // Store fetched employees in state
       })
-      .catch(error => { })
+      .catch(error => {
+        console.error("There was an error fetching the employee data!", error);
+      })
     }
   render() {
     return (
