@@ -2,6 +2,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import axios from "axios";
 import React from "react";
+//import for frontend css
+import { Container } from "react-bootstrap";
 
 class App extends React.Component {
   state = { details: [] };
@@ -21,34 +23,38 @@ class App extends React.Component {
     return (
       <div>
         <Header />
-        <h1>Bangladesh Submarine Cables PLC</h1>
-        <hr />
-        <table>
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Phone Number</th>
-              <th>Email</th>
-              <th>Department</th>
-              <th>Actions</th>
-            </tr>
+        <main className="py-3">
+          <Container>
+            <h1>Bangladesh Submarine Cables PLC</h1>
+            <hr />
+            <table>
+              <thead>
+                <tr>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Phone Number</th>
+                  <th>Email</th>
+                  <th>Department</th>
+                  <th>Actions</th>
+                </tr>
 
-            {this.state.details.map((detail, index) => (
-              <tr key={index}>
-                <td>{detail.first_name} </td>
-                <td>{detail.last_name}</td>
-                <td>{detail.phone_number}</td>
-                <td>{detail.email}</td>
-                <td>{detail.department}</td>
-                <td>
-                  <button onclick>Edit</button>
-                  <button onclick>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </thead>
-        </table>
+                {this.state.details.map((detail, index) => (
+                  <tr key={index}>
+                    <td>{detail.first_name} </td>
+                    <td>{detail.last_name}</td>
+                    <td>{detail.phone_number}</td>
+                    <td>{detail.email}</td>
+                    <td>{detail.department}</td>
+                    <td>
+                      <button onclick>Edit</button>
+                      <button onclick>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </thead>
+            </table>
+          </Container>
+        </main>
         <Footer />
         {/* <ul>
           {this.state.details.map((detail, index) => (
