@@ -1,6 +1,5 @@
-//import logo from './logo.svg';
-//import './App.css';
-
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import axios from "axios";
 import React from "react";
 
@@ -20,7 +19,8 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="Container" style={{ padding: "40px" }}>
+      <div>
+        <Header />
         <h1>Bangladesh Submarine Cables PLC</h1>
         <hr />
         <table>
@@ -49,6 +49,7 @@ class App extends React.Component {
             ))}
           </thead>
         </table>
+        <Footer />
         {/* <ul>
           {this.state.details.map((detail, index) => (
             <li key={index}>
