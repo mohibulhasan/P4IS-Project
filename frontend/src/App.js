@@ -3,7 +3,7 @@ import Footer from "./components/Footer";
 import axios from "axios";
 import React from "react";
 //import for frontend css
-import { Container } from "react-bootstrap";
+import { Container, Button, Table, Row, Col } from "react-bootstrap";
 
 class App extends React.Component {
   state = { details: [] };
@@ -27,32 +27,36 @@ class App extends React.Component {
           <Container>
             <h1>Bangladesh Submarine Cables PLC</h1>
             <hr />
-            <table>
-              <thead>
-                <tr>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Phone Number</th>
-                  <th>Email</th>
-                  <th>Department</th>
-                  <th>Actions</th>
-                </tr>
+            <Row>
+              <Col sm={12} md={6} lg={4} xl={3}>
+                <Table striped bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Phone Number</th>
+                      <th>Email</th>
+                      <th>Department</th>
+                      <th>Actions</th>
+                    </tr>
 
-                {this.state.details.map((detail, index) => (
-                  <tr key={index}>
-                    <td>{detail.first_name} </td>
-                    <td>{detail.last_name}</td>
-                    <td>{detail.phone_number}</td>
-                    <td>{detail.email}</td>
-                    <td>{detail.department}</td>
-                    <td>
-                      <button onclick>Edit</button>
-                      <button onclick>Delete</button>
-                    </td>
-                  </tr>
-                ))}
-              </thead>
-            </table>
+                    {this.state.details.map((detail, index) => (
+                      <tr key={index}>
+                        <td>{detail.first_name} </td>
+                        <td>{detail.last_name}</td>
+                        <td>{detail.phone_number}</td>
+                        <td>{detail.email}</td>
+                        <td>{detail.department}</td>
+                        <td>
+                          <Button variant="outline-info">Edit</Button>
+                          <Button variant="outline-danger">Delete</Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </thead>
+                </Table>
+              </Col>
+            </Row>
           </Container>
         </main>
         <Footer />
