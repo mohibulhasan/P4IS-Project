@@ -107,6 +107,9 @@ class HomeScreen extends React.Component {
       <div>
         <h2>Bangladesh Submarine Cables PLC</h2>
         <hr />
+        <Button variant="success" onClick={this.handleCreate} className="mb-3">
+          + Add Employee
+        </Button>
         <Row>
           <Col>
             <Table striped bordered hover responsive>

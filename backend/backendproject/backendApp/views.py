@@ -6,10 +6,10 @@ from . serializer import *
 from rest_framework.response import Response
 from .serializer import ReactSerializer
 
-# Handles POST requests separately
-class EmployeeCreateView(CreateAPIView):
-    queryset = Employee.objects.all()
-    serializer_class = ReactSerializer
+# # Handles POST requests separately
+# class EmployeeCreateView(CreateAPIView):
+#     queryset = Employee.objects.all()
+#     serializer_class = ReactSerializer
 
 # Handles GET, PUT, and DELETE requests with pk
 class EmployeeDetailView(RetrieveUpdateDestroyAPIView):
@@ -19,6 +19,18 @@ class EmployeeDetailView(RetrieveUpdateDestroyAPIView):
 class EmployeeListCreateView(ListCreateAPIView):
     queryset = Employee.objects.all()
     serializer_class = ReactSerializer
+
+
+# customer view
+
+class CustomerListCreateView(ListCreateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = ReactSerializer
+
+class CustomerDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = ReactSerializer
+
 
 
 # class ReactView(CreateAPIView):
