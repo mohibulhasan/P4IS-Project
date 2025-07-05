@@ -35,7 +35,9 @@ function Header() {
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link href="#contactus">Contact Support</Nav.Link>
+              <Nav.Link as={Link} to="/Troubleshoot">
+                Troubleshoot Tools
+              </Nav.Link>
               <Nav.Link eventKey={2} href="#login">
                 User Login
               </Nav.Link>

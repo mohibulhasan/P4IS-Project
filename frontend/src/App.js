@@ -2,6 +2,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EmployeeScreen from "./components/EmployeeScreen";
 import CustomerScreen from "./components/CustomerScreen";
+import Troubleshoot from "./components/Troubleshoot";
 import IPTransit from "./components/services/ip-transit";
 import IPLC from "./components/services/iplc";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<EmployeeScreen />} />
             <Route path="/employees" element={<EmployeeScreen />} />
             <Route path="/customers" element={<CustomerScreen />} />
+            <Route path="/troubleshoot" element={<Troubleshoot />} />
             <Route path="/services/ip-transit" element={<IPTransit />} />
             <Route path="/services/iplc" element={<IPLC />} />
             {/* Add more routes as needed */}
