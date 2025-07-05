@@ -4,7 +4,7 @@ import axios from "axios";
 //import for frontend css
 import { Button, Table, Row, Col, Modal, Form } from "react-bootstrap";
 
-class HomeScreen extends React.Component {
+class EmployeeScreen extends React.Component {
   state = {
     details: [],
     showModal: false,
@@ -202,4 +202,4 @@ class HomeScreen extends React.Component {
   }
 }
 
-export default HomeScreen;
+export default EmployeeScreen;

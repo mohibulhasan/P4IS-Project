@@ -1,6 +1,6 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import HomeScreen from "./components/HomeScreen";
+import EmployeeScreen from "./components/EmployeeScreen";
 import CustomerScreen from "./components/CustomerScreen";
 import IPTransit from "./components/services/ip-transit";
 import IPLC from "./components/services/iplc";
@@ -16,8 +16,8 @@ function App() {
           <Header />
 
           <Routes>
-            <Route path="/" element={<HomeScreen />} />
-            <Route path="/employees" element={<HomeScreen />} />
+            <Route path="/" element={<EmployeeScreen />} />
+            <Route path="/employees" element={<EmployeeScreen />} />
             <Route path="/customers" element={<CustomerScreen />} />
             <Route path="/services/ip-transit" element={<IPTransit />} />
             <Route path="/services/iplc" element={<IPLC />} />
