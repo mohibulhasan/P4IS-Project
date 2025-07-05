@@ -47,6 +47,33 @@ class HomeScreen extends React.Component {
     }));
   };
 
+  handleCreate = () => {
+    this.setState({
+      showModal: true, // Show the modal for creating a new employee
+      formData: {
+        id: null, // Reset form data for new employee
+        first_name: "",
+        last_name: "",
+        phone_number: "",
+        email: "",
+        department: "",
+      },
+    });
+  };
+
+  handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this employee?")) {
+      axios
+        .delete(`http://localhost:8000/employees/${id}/`)
+        .then(() => {
+          this.fetchEmployees(); // Refresh the employee list after deletion
+        })
+        .catch((error) => {
+          console.error("There was an error deleting the employee!", error);
+        });
+    }
+  };
+
   handleSubmit = () => {
     const { formData } = this.state;
 
