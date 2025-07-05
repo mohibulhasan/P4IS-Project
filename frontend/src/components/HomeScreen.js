@@ -5,7 +5,9 @@ import axios from "axios";
 import { Button, Table, Row, Col } from "react-bootstrap";
 
 class HomeScreen extends React.Component {
-  state = { details: [] };
+  state = {
+    details: [],
+  };
 
   componentDidMount() {
     axios
@@ -19,13 +21,14 @@ class HomeScreen extends React.Component {
   }
 
   render() {
+    const { details, showModal, formData } = this.state;
     return (
       <div>
         <h2>Bangladesh Submarine Cables PLC</h2>
         <hr />
         <Row>
-          <Col sm={12} md={6} lg={4} xl={3}>
-            <Table striped bordered hover size="sm">
+          <Col>
+            <Table striped bordered hover responsive>
               <thead>
                 <tr>
                   <th>First Name</th>
@@ -35,21 +38,35 @@ class HomeScreen extends React.Component {
                   <th>Department</th>
                   <th>Actions</th>
                 </tr>
-
-                {this.state.details.map((detail, index) => (
-                  <tr key={index}>
+              </thead>
+              <tbody>
+                {details.map((detail) => (
+                  <tr key={detail.id}>
                     <td>{detail.first_name} </td>
                     <td>{detail.last_name}</td>
                     <td>{detail.phone_number}</td>
                     <td>{detail.email}</td>
                     <td>{detail.department}</td>
                     <td>
-                      <Button variant="outline-info">Edit</Button>
-                      <Button variant="outline-danger">Delete</Button>
+                      <Button
+                        variant="outline-info"
+                        size="sm"
+                        onClick={() => this.handleEdit(detail)}
+                        className="me-2"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => this.handleDelete(detail.id)}
+                      >
+                        Delete
+                      </Button>
                     </td>
                   </tr>
                 ))}
-              </thead>
+              </tbody>
             </Table>
           </Col>
         </Row>

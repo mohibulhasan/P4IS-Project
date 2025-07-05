@@ -14,7 +14,7 @@ function Header() {
         variant="dark"
       >
         <Container>
-          <Navbar.Brand href="">BSCPLC</Navbar.Brand>
+          <Navbar.Brand href="#">BSCPLC</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
