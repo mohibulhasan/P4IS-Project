@@ -14,7 +14,9 @@ class IPTransit extends React.Component {
         <Container>
           <Accordion defaultActiveKey="0">
             <Accordion.Item eventKey="0">
-              <Accordion.Header>Journey to IIG</Accordion.Header>
+              <Accordion.Header>
+                <strong>Journey to IIG</strong>
+              </Accordion.Header>
               <Accordion.Body>
                 BSCPLC started the journey of providing IP transit connectivity
                 services from 1st July 2013 aiming to facilitate the pace of
@@ -40,7 +42,9 @@ class IPTransit extends React.Component {
             </Accordion.Item>
 
             <Accordion.Item eventKey="1">
-              <Accordion.Header>Product Features:</Accordion.Header>
+              <Accordion.Header>
+                <strong>Product Features:</strong>
+              </Accordion.Header>
               <Accordion.Body>
                 • Complete Redundancy: BSCPLC is connected to various upstream
                 routers in in Singapore and Marseille via SMW-4 submarine cable

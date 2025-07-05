@@ -26,7 +26,7 @@ function Header() {
                 <NavDropdown.Item as={Link} to="/services/ip-transit">
                   IP Transit
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
+                <NavDropdown.Item as={Link} to="/services/iplc">
                   IP Bandwidth
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">
