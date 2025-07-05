@@ -40,6 +40,40 @@ class HomeScreen extends React.Component {
     });
   };
 
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState((prevState) => ({
+      formData: { ...prevState.formData, [name]: value }, // Update form data as user types
+    }));
+  };
+
+  handleSubmit = () => {
+    const { formData } = this.state;
+
+    if (formData.id) {
+      // If id exists, update the employee
+      axios
+        .put(`http://localhost:8000/employees/${formData.id}/`, formData)
+        .then(() => {
+          this.fetchEmployees(); // Refresh the employee list
+          this.setState({ showModal: false }); // Close the modal
+        })
+        .catch((err) =>
+          console.error("There was an error updating the employee!", err)
+        );
+    } else {
+      axios
+        .post("http://localhost:8000/employees/", formData)
+        .then(() => {
+          this.fetchEmployees(); // Refresh the employee list
+          this.setState({ showModal: false }); // Close the modal
+        })
+        .catch((err) =>
+          console.error("There was an error creating the employee!", err)
+        );
+    }
+  };
+
   render() {
     const { details, showModal, formData } = this.state;
     return (
@@ -90,7 +124,7 @@ class HomeScreen extends React.Component {
             </Table>
           </Col>
         </Row>
-
+        {/* Modal used for Edit/create */}
         <Modal
           show={showModal}
           onHide={() => this.setState({ showModal: false })}
@@ -128,7 +162,7 @@ class HomeScreen extends React.Component {
             >
               Close
             </Button>
-            <Button variant="primary" onClick={this.HandleSubmit}>
+            <Button variant="primary" onClick={this.handleSubmit}>
               {formData.id ? "Update" : "Create"}
             </Button>
           </Modal.Footer>
