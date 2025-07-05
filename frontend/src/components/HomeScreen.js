@@ -2,14 +2,27 @@ import React from "react";
 import axios from "axios";
 
 //import for frontend css
-import { Button, Table, Row, Col } from "react-bootstrap";
+import { Button, Table, Row, Col, Modal, Form } from "react-bootstrap";
 
 class HomeScreen extends React.Component {
   state = {
     details: [],
+    showModal: false,
+    formData: {
+      id: null,
+      first_name: "",
+      last_name: "",
+      phone_number: "",
+      email: "",
+      department: "",
+    },
   };
 
   componentDidMount() {
+    this.fetchEmployees(); // Fetch employees when the component mounts
+  }
+
+  fetchEmployees = () => {
     axios
       .get("http://localhost:8000/employees/")
       .then((response) => {
@@ -18,7 +31,7 @@ class HomeScreen extends React.Component {
       .catch((error) => {
         console.error("There was an error fetching the employee data!", error);
       });
-  }
+  };
 
   render() {
     const { details, showModal, formData } = this.state;
