@@ -2,24 +2,25 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { LinkContainer } from "react-router-bootstrap";
 
 function Header() {
   return (
     <header>
-      <Navbar
-        collapseOnSelect
-        expand="lg"
-        //className="bg-body-tertiary"
-        bg="dark"
-        variant="dark"
-      >
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand href="#">BSCPLC</Navbar.Brand>
+          <LinkContainer to="/">
+            <Navbar.Brand>BSCPLC</Navbar.Brand>
+          </LinkContainer>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#aboutus">About Us</Nav.Link>
-              <Nav.Link href="#features">Features</Nav.Link>
+              <LinkContainer to="/employees">
+                <Nav.Link>Employees</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/customers">
+                <Nav.Link>Customers</Nav.Link>
+              </LinkContainer>
               <NavDropdown title="Services" id="collapsible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">
                   IP Transit
@@ -30,7 +31,6 @@ function Header() {
                 <NavDropdown.Item href="#action/3.3">
                   Colocation Service
                 </NavDropdown.Item>
-                <NavDropdown.Divider />
               </NavDropdown>
             </Nav>
             <Nav>
