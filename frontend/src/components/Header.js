@@ -23,7 +23,7 @@ function Header() {
                 Customers
               </Nav.Link>
               <NavDropdown title="Services" id="collapsible-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">
+                <NavDropdown.Item as={Link} to="/services/ip-transit">
                   IP Transit
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">

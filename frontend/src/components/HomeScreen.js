@@ -104,7 +104,7 @@ class HomeScreen extends React.Component {
   render() {
     const { details, showModal, formData } = this.state;
     return (
-      <div>
+      <div className="p-4">
         <h2>Bangladesh Submarine Cables PLC</h2>
         <hr />
         <Button variant="success" onClick={this.handleCreate} className="mb-3">
