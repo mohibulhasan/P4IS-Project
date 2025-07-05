@@ -25,11 +25,11 @@ class EmployeeListCreateView(ListCreateAPIView):
 
 class CustomerListCreateView(ListCreateAPIView):
     queryset = Customer.objects.all()
-    serializer_class = ReactSerializer
+    serializer_class = CustomerSerializer
 
 class CustomerDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
-    serializer_class = ReactSerializer
+    serializer_class = CustomerSerializer
 
 
 
