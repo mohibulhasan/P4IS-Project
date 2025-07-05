@@ -33,6 +33,13 @@ class HomeScreen extends React.Component {
       });
   };
 
+  handleEdit = (employee) => {
+    this.setState({
+      showModal: true,
+      formData: { ...employee }, // Set the form data to the employee being edited
+    });
+  };
+
   render() {
     const { details, showModal, formData } = this.state;
     return (
@@ -83,6 +90,49 @@ class HomeScreen extends React.Component {
             </Table>
           </Col>
         </Row>
+
+        <Modal
+          show={showModal}
+          onHide={() => this.setState({ showModal: false })}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>{formData.id ? "Edit" : "Add"} Employee</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              {[
+                "first_name",
+                "last_name",
+                "phone_number",
+                "email",
+                "department",
+              ].map((field) => (
+                <Form.Group className="mb-3" key={field}>
+                  <Form.Label>
+                    {field.replace("_", " ").toUpperCase()}
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name={field}
+                    value={formData[field]}
+                    onChange={this.handleChange}
+                  />
+                </Form.Group>
+              ))}
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => this.setState({ showModal: false })}
+            >
+              Close
+            </Button>
+            <Button variant="primary" onClick={this.HandleSubmit}>
+              {formData.id ? "Update" : "Create"}
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
