@@ -5,6 +5,7 @@ import { Button, Table, Row, Col, Modal, Form } from "react-bootstrap";
 class CustomerScreen extends React.Component {
   state = {
     customers: [],
+    locations: [], // To store locations for the dropdown
     showModal: false,
     formData: {
       id: null,
@@ -13,12 +14,14 @@ class CustomerScreen extends React.Component {
       organization: "",
       email: "",
       phone: "",
+      location: "", // Assuming location is a foreign key to another model
       customer_type: "",
     },
   };
 
   componentDidMount() {
-    this.fetchCustomers();
+    this.fetchCustomers(); // Fetch customers when the component mounts
+    this.fetchLocations(); // Fetch locations when the component mounts
   }
 
   fetchCustomers = () => {
@@ -62,6 +65,7 @@ class CustomerScreen extends React.Component {
         organization: "",
         email: "",
         phone: "",
+        location: [], // Reset location for new customer
         customer_type: "",
       },
     });
@@ -69,17 +73,22 @@ class CustomerScreen extends React.Component {
 
   handleChange = (e) => {
     const { name, value } = e.target;
+    const parsedValue = name === "location" ? parseInt(value) : value; // Parse location as integer if needed
     this.setState((prev) => ({
-      formData: { ...prev.formData, [name]: value },
+      formData: { ...prev.formData, [name]: parsedValue },
     }));
   };
 
   handleSubmit = () => {
     const { formData } = this.state;
-
+    const payload = {
+      ...formData,
+      location_id: formData.location, // location is a foreign key
+    };
+    delete payload.location; // Remove location array if not needed
     if (formData.id) {
       axios
-        .put(`http://localhost:8000/customers/${formData.id}/`, formData)
+        .put(`http://localhost:8000/customers/${formData.id}/`, payload)
         .then(() => {
           this.setState({ showModal: false });
           this.fetchCustomers();
@@ -87,13 +96,20 @@ class CustomerScreen extends React.Component {
         .catch((err) => console.error("Update failed!", err));
     } else {
       axios
-        .post(`http://localhost:8000/customers/`, formData)
+        .post(`http://localhost:8000/customers/`, payload)
         .then(() => {
           this.setState({ showModal: false });
           this.fetchCustomers();
         })
         .catch((err) => console.error("Create failed!", err));
     }
+  };
+
+  fetchLocations = () => {
+    axios
+      .get("http://localhost:8000/locations/")
+      .then((res) => this.setState({ locations: res.data }))
+      .catch((err) => console.error("Error fetching locations!", err));
   };
 
   render() {
@@ -117,6 +133,7 @@ class CustomerScreen extends React.Component {
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Type</th>
+                  <th>Location</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -128,7 +145,11 @@ class CustomerScreen extends React.Component {
                     <td>{cust.organization}</td>
                     <td>{cust.email}</td>
                     <td>{cust.phone}</td>
+                    <td>{cust.location}</td>
                     <td>{cust.customer_type}</td>
+                    <td>
+                      {cust.location ? cust.location.location_name : "N/A"}
+                    </td>
                     <td>
                       <Button
                         variant="outline-info"
@@ -171,6 +192,7 @@ class CustomerScreen extends React.Component {
                 "organization",
                 "email",
                 "phone",
+                "Location",
               ].map((field) => (
                 <Form.Group className="mb-3" key={field}>
                   <Form.Label>
@@ -184,6 +206,22 @@ class CustomerScreen extends React.Component {
                   />
                 </Form.Group>
               ))}
+              <Form.Group className="mb-3">
+                <Form.Label>Location</Form.Label>
+                <Form.Select
+                  name="location"
+                  value={formData.location || ""}
+                  onChange={this.handleChange}
+                >
+                  <option value="">-- Select Location --</option>
+                  {this.state.locations.map((loc) => (
+                    <option key={loc.id} value={loc.id}>
+                      {loc.location_name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Label>Customer Type</Form.Label>
                 <Form.Select

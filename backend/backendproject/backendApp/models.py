@@ -23,6 +23,7 @@ class Customer(models.Model):
         ('NIX', 'NIX')
     )
     customer_type = models.CharField(max_length=100, null=True, choices=ctype)
+    location = models.ForeignKey('LocationInfo', on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

@@ -10,5 +10,7 @@ urlpatterns = [
     
     path('customers/', CustomerListCreateView.as_view(), name='customer-list'),
     path('customers/<int:pk>/', CustomerDetailView.as_view(), name='customer-detail'),
+    path('locations/', LocationListCreateView.as_view(), name='location-list-create'),  # For GET ALL requests
+    path('locations/<int:pk>/', LocationDetailView.as_view(), name='location-detail'),  # For GET, PUT, DELETE
 ]
 

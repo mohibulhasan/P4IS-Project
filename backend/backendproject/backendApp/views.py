@@ -30,6 +30,14 @@ class CustomerListCreateView(ListCreateAPIView):
 class CustomerDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    
+class LocationListCreateView(ListCreateAPIView):
+    queryset = LocationInfo.objects.all()
+    serializer_class = LocationSerializer
+
+class LocationDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = LocationInfo.objects.all()
+    serializer_class = LocationSerializer
 
 
 
