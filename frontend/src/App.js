@@ -8,6 +8,7 @@ import IPLC from "./components/services/iplc";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from "react";
 import { Container } from "react-bootstrap";
+import HomeScreen from "./components/HomeScreen";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
           <Header />
 
           <Routes>
-            <Route path="/" element={<EmployeeScreen />} />
+            <Route path="/" element={<HomeScreen />} />
+            <Route path="/HomeScreen" element={<HomeScreen />} />
             <Route path="/employees" element={<EmployeeScreen />} />
             <Route path="/customers" element={<CustomerScreen />} />
             <Route path="/troubleshoot" element={<Troubleshoot />} />
