@@ -5,7 +5,7 @@ import { Button, Table, Row, Col, Modal, Form } from "react-bootstrap";
 class CustomerScreen extends React.Component {
   state = {
     customers: [],
-    locations: [], // To store locations for the dropdown
+    locations: [],
     showModal: false,
     formData: {
       id: null,
@@ -14,14 +14,14 @@ class CustomerScreen extends React.Component {
       organization: "",
       email: "",
       phone: "",
-      location: "", // Assuming location is a foreign key to another model
+      location: "",
       customer_type: "",
     },
   };
 
   componentDidMount() {
-    this.fetchCustomers(); // Fetch customers when the component mounts
-    this.fetchLocations(); // Fetch locations when the component mounts
+    this.fetchCustomers();
+    this.fetchLocations();
   }
 
   fetchCustomers = () => {
@@ -33,6 +33,13 @@ class CustomerScreen extends React.Component {
       .catch((error) => {
         console.error("Error fetching customers!", error);
       });
+  };
+
+  fetchLocations = () => {
+    axios
+      .get("http://localhost:8000/locations/")
+      .then((res) => this.setState({ locations: res.data }))
+      .catch((err) => console.error("Error fetching locations!", err));
   };
 
   handleDelete = (id) => {
@@ -51,7 +58,10 @@ class CustomerScreen extends React.Component {
   handleEdit = (customer) => {
     this.setState({
       showModal: true,
-      formData: { ...customer },
+      formData: {
+        ...customer,
+        location: customer.location?.id || "",
+      },
     });
   };
 
@@ -65,7 +75,7 @@ class CustomerScreen extends React.Component {
         organization: "",
         email: "",
         phone: "",
-        location: [], // Reset location for new customer
+        location: "",
         customer_type: "",
       },
     });
@@ -73,9 +83,11 @@ class CustomerScreen extends React.Component {
 
   handleChange = (e) => {
     const { name, value } = e.target;
-    const parsedValue = name === "location" ? parseInt(value) : value; // Parse location as integer if needed
     this.setState((prev) => ({
-      formData: { ...prev.formData, [name]: parsedValue },
+      formData: {
+        ...prev.formData,
+        [name]: name === "location" ? parseInt(value) : value,
+      },
     }));
   };
 
@@ -83,37 +95,25 @@ class CustomerScreen extends React.Component {
     const { formData } = this.state;
     const payload = {
       ...formData,
-      location_id: formData.location, // location is a foreign key
+      location: parseInt(formData.location),
     };
-    delete payload.location; // Remove location array if not needed
-    if (formData.id) {
-      axios
-        .put(`http://localhost:8000/customers/${formData.id}/`, payload)
-        .then(() => {
-          this.setState({ showModal: false });
-          this.fetchCustomers();
-        })
-        .catch((err) => console.error("Update failed!", err));
-    } else {
-      axios
-        .post(`http://localhost:8000/customers/`, payload)
-        .then(() => {
-          this.setState({ showModal: false });
-          this.fetchCustomers();
-        })
-        .catch((err) => console.error("Create failed!", err));
-    }
-  };
 
-  fetchLocations = () => {
-    axios
-      .get("http://localhost:8000/locations/")
-      .then((res) => this.setState({ locations: res.data }))
-      .catch((err) => console.error("Error fetching locations!", err));
+    const url = formData.id
+      ? `http://localhost:8000/customers/${formData.id}/`
+      : "http://localhost:8000/customers/";
+
+    const method = formData.id ? axios.put : axios.post;
+
+    method(url, payload)
+      .then(() => {
+        this.setState({ showModal: false });
+        this.fetchCustomers();
+      })
+      .catch((err) => console.error("Save failed!", err));
   };
 
   render() {
-    const { customers, showModal, formData } = this.state;
+    const { customers, showModal, formData, locations } = this.state;
 
     return (
       <div className="p-4">
@@ -145,11 +145,8 @@ class CustomerScreen extends React.Component {
                     <td>{cust.organization}</td>
                     <td>{cust.email}</td>
                     <td>{cust.phone}</td>
-                    <td>{cust.location}</td>
                     <td>{cust.customer_type}</td>
-                    <td>
-                      {cust.location ? cust.location.location_name : "N/A"}
-                    </td>
+                    <td>{cust.location?.location_name || "N/A"}</td>
                     <td>
                       <Button
                         variant="outline-info"
@@ -174,7 +171,6 @@ class CustomerScreen extends React.Component {
           </Col>
         </Row>
 
-        {/* Modal for Create/Update */}
         <Modal
           show={showModal}
           onHide={() => this.setState({ showModal: false })}
@@ -192,7 +188,6 @@ class CustomerScreen extends React.Component {
                 "organization",
                 "email",
                 "phone",
-                "Location",
               ].map((field) => (
                 <Form.Group className="mb-3" key={field}>
                   <Form.Label>
@@ -201,11 +196,12 @@ class CustomerScreen extends React.Component {
                   <Form.Control
                     type="text"
                     name={field}
-                    value={formData[field]}
+                    value={formData[field] || ""}
                     onChange={this.handleChange}
                   />
                 </Form.Group>
               ))}
+
               <Form.Group className="mb-3">
                 <Form.Label>Location</Form.Label>
                 <Form.Select
@@ -214,7 +210,7 @@ class CustomerScreen extends React.Component {
                   onChange={this.handleChange}
                 >
                   <option value="">-- Select Location --</option>
-                  {this.state.locations.map((loc) => (
+                  {locations.map((loc) => (
                     <option key={loc.id} value={loc.id}>
                       {loc.location_name}
                     </option>

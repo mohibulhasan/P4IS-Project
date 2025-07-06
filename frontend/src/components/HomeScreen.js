@@ -1,100 +1,181 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
-import { Container, Row, Col, Card, Table, Button } from "react-bootstrap";
-import "../bootstrap.min.css";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Table,
+  Button,
+  Form,
+} from "react-bootstrap";
 import Calendar from "react-calendar";
+import "../bootstrap.min.css";
 
-const HomeScreen = () => {
-  const [customerData, setCustomerData] = useState([]);
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [date, setDate] = useState(new Date());
+class HomeScreen extends React.Component {
+  state = {
+    customerData: [],
+    locationData: [],
+    newLocationName: "",
+    currentTime: new Date(),
+    date: new Date(),
+  };
 
-  useEffect(() => {
+  componentDidMount() {
+    this.fetchCustomers();
+    this.fetchLocations();
+    this.clockInterval = setInterval(
+      () => this.setState({ currentTime: new Date() }),
+      1000
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.clockInterval);
+  }
+
+  fetchCustomers = () => {
     axios
       .get("http://localhost:8000/customers/")
-      .then((res) => setCustomerData(res.data))
+      .then((res) => this.setState({ customerData: res.data }))
       .catch((err) => console.error("Error fetching customer data:", err));
-  }, []);
+  };
 
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+  fetchLocations = () => {
+    axios
+      .get("http://localhost:8000/locations/")
+      .then((res) => this.setState({ locationData: res.data }))
+      .catch((err) => console.error("Error fetching locations:", err));
+  };
 
-  return (
-    <Container className="mt-4">
-      <Row>
-        {/* Left Column */}
-        <Col lg={8}>
-          <Card className="mb-4">
-            <Card.Header>
-              <h5>
-                <i className="fas fa-chart-pie me-2"></i>
-                Customer Properties
-              </h5>
-            </Card.Header>
-            <Card.Body>
-              <Table striped bordered hover size="sm">
-                <thead className="table-success">
-                  <tr>
-                    <th>Customer Name</th>
-                    <th>AS Number</th>
-                    <th>Peering IP</th>
-                    <th>Location</th>
-                    <th className="text-center">Bandwidth</th>
-                    <th className="text-center">Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {customerData.map((cp, index) => (
-                    <tr key={index}>
-                      <td>
-                        {cp.first_name} {cp.last_name}
-                      </td>
-                      <td>{cp.ASN || "-"}</td>
-                      <td>{cp.peering_IP || "-"}</td>
-                      <td>{cp.customer_location || "-"}</td>
-                      <td className="text-end">
-                        {cp.customer_Bandwidth} {cp.customer_unit}
-                      </td>
-                      <td className="text-center">{cp.customer_type}</td>
+  handleLocationAdd = () => {
+    const { newLocationName } = this.state;
+    if (!newLocationName.trim()) return;
+
+    axios
+      .post("http://localhost:8000/locations/", {
+        location_name: newLocationName,
+      })
+      .then(() => {
+        this.setState({ newLocationName: "" });
+        this.fetchLocations();
+      })
+      .catch((err) => console.error("Error adding location:", err));
+  };
+
+  render() {
+    const { customerData, locationData, newLocationName, currentTime, date } =
+      this.state;
+
+    return (
+      <Container className="mt-4">
+        <Row>
+          {/* Left Column */}
+          <Col lg={8}>
+            <Card className="mb-4">
+              <Card.Header>
+                <h5>
+                  <i className="fas fa-chart-pie me-2"></i>
+                  Customer Properties
+                </h5>
+              </Card.Header>
+              <Card.Body>
+                <Table striped bordered hover size="sm">
+                  <thead className="table-success">
+                    <tr>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Organization</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Type</th>
+                      <th>Location</th>
                     </tr>
+                  </thead>
+                  <tbody>
+                    {customerData.map((cust) => (
+                      <tr key={cust.id}>
+                        <td>{cust.first_name}</td>
+                        <td>{cust.last_name}</td>
+                        <td>{cust.organization}</td>
+                        <td>{cust.email}</td>
+                        <td>{cust.phone}</td>
+                        <td>{cust.customer_type}</td>
+                        <td>
+                          {cust.location ? cust.location.location_name : "N/A"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Card.Body>
+            </Card>
+
+            <Card className="mb-4">
+              <Card.Header>
+                <h5>
+                  <i className="fas fa-map-marker-alt me-2"></i>
+                  Location Management
+                </h5>
+              </Card.Header>
+              <Card.Body>
+                <ul>
+                  {locationData.map((loc) => (
+                    <li key={loc.id}>{loc.location_name}</li>
                   ))}
-                </tbody>
-              </Table>
-              <Button variant="primary" size="sm" href="/add-customer">
-                Add Customer
-              </Button>
-            </Card.Body>
-          </Card>
-        </Col>
+                </ul>
+                <Form.Group className="d-flex mt-3">
+                  <Form.Control
+                    type="text"
+                    placeholder="Add new location"
+                    value={newLocationName}
+                    onChange={(e) =>
+                      this.setState({ newLocationName: e.target.value })
+                    }
+                  />
+                  <Button
+                    variant="primary"
+                    className="ms-2"
+                    onClick={this.handleLocationAdd}
+                  >
+                    Add
+                  </Button>
+                </Form.Group>
+              </Card.Body>
+            </Card>
+          </Col>
 
-        {/* Right Column */}
-        <Col lg={4}>
-          <Card bg="primary" text="white" className="mb-4">
-            <Card.Header>
-              <i className="fas fa-tachometer-alt me-2"></i>
-              Clock
-            </Card.Header>
-            <Card.Body className="text-center">
-              <h2>{currentTime.toLocaleTimeString()}</h2>
-            </Card.Body>
-          </Card>
+          {/* Right Column */}
+          <Col lg={4}>
+            <Card bg="primary" text="white" className="mb-4">
+              <Card.Header>
+                <i className="fas fa-tachometer-alt me-2"></i>
+                Clock
+              </Card.Header>
+              <Card.Body className="text-center">
+                <h2>{currentTime.toLocaleTimeString()}</h2>
+              </Card.Body>
+            </Card>
 
-          <Card className="shadow">
-            <Card.Header className="bg-success text-white">
-              <h5 className="mb-0">
-                <i className="far fa-calendar-alt me-2"></i>Calendar
-              </h5>
-            </Card.Header>
-            <Card.Body>
-              <Calendar onChange={setDate} value={date} className="w-100" />
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+            <Card className="shadow">
+              <Card.Header className="bg-success text-white">
+                <h5 className="mb-0">
+                  <i className="far fa-calendar-alt me-2"></i>Calendar
+                </h5>
+              </Card.Header>
+              <Card.Body>
+                <Calendar
+                  onChange={(date) => this.setState({ date })}
+                  value={date}
+                  className="w-100"
+                />
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+}
 
 export default HomeScreen;
