@@ -93,11 +93,8 @@ class CustomerScreen extends React.Component {
 
   handleSubmit = () => {
     const { formData } = this.state;
-    const payload = {
-      ...formData,
-      location: parseInt(formData.location),
-    };
-
+    const payload = { ...formData };
+    console.log("Submitting formdata:", formData);
     const url = formData.id
       ? `http://localhost:8000/customers/${formData.id}/`
       : "http://localhost:8000/customers/";
@@ -146,7 +143,11 @@ class CustomerScreen extends React.Component {
                     <td>{cust.email}</td>
                     <td>{cust.phone}</td>
                     <td>{cust.customer_type}</td>
-                    <td>{cust.location?.location_name || "N/A"}</td>
+                    <td>
+                      {locations.find((loc) => loc.id === cust.location)
+                        ?.location_name || "N/A"}
+                      {/* This gave me hassle a lot to figure out why it was not working */}
+                    </td>
                     <td>
                       <Button
                         variant="outline-info"

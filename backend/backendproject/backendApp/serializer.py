@@ -12,8 +12,12 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = ['id', 'location_name']
 
 class CustomerSerializer(serializers.ModelSerializer):
-    location = LocationSerializer() #https://www.django-rest-framework.org/api-guide/relations/#nested-relationships
+    #location = LocationSerializer()
+    location = serializers.PrimaryKeyRelatedField(queryset=LocationInfo.objects.all())
+
     class Meta:
         model = Customer
         fields = '__all__'
+
+
         
