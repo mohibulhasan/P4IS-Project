@@ -76,7 +76,7 @@ class HomeScreen extends React.Component {
               <Card.Header>
                 <h5>
                   <i className="fas fa-chart-pie me-2"></i>
-                  Customer Properties
+                  Customer Details
                 </h5>
               </Card.Header>
               <Card.Body>
@@ -148,7 +148,7 @@ class HomeScreen extends React.Component {
           {/* Right Column */}
           <Col lg={4}>
             <Card bg="primary" text="white" className="mb-4">
-              <Card.Header>
+              <Card.Header className="bg-success text-white">
                 <i className="fas fa-tachometer-alt me-2"></i>
                 Clock
               </Card.Header>
