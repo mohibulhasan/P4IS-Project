@@ -102,7 +102,8 @@ class HomeScreen extends React.Component {
                         <td>{cust.phone}</td>
                         <td>{cust.customer_type}</td>
                         <td>
-                          {cust.location ? cust.location.location_name : "N/A"}
+                          {locationData.find((loc) => loc.id === cust.location)
+                            ?.location_name || "N/A"}
                         </td>
                       </tr>
                     ))}
@@ -110,12 +111,15 @@ class HomeScreen extends React.Component {
                 </Table>
               </Card.Body>
             </Card>
+          </Col>
 
+          {/* Right Column */}
+          <Col lg={4}>
             <Card className="mb-4">
-              <Card.Header>
+              <Card.Header className="bg-success text-white">
                 <h5>
                   <i className="fas fa-map-marker-alt me-2"></i>
-                  Location Management
+                  PoP Locations
                 </h5>
               </Card.Header>
               <Card.Body>
@@ -143,10 +147,6 @@ class HomeScreen extends React.Component {
                 </Form.Group>
               </Card.Body>
             </Card>
-          </Col>
-
-          {/* Right Column */}
-          <Col lg={4}>
             <Card bg="primary" text="white" className="mb-4">
               <Card.Header className="bg-success text-white">
                 <i className="fas fa-tachometer-alt me-2"></i>
