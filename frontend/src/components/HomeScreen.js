@@ -89,7 +89,7 @@ class HomeScreen extends React.Component {
                   <Button
                     variant="primary"
                     className="ms-2"
-                    // onClick={this.handleLocationAdd}
+                    onClick={() => alert("This is out of scope for now")}
                   >
                     Submit
                   </Button>
