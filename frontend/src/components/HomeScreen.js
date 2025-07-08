@@ -73,6 +73,30 @@ class HomeScreen extends React.Component {
           {/* Left Column */}
           <Col lg={8}>
             <Card className="mb-4">
+              <Card.Header className="bg-success text-white">
+                <h5>Select a Network Device</h5>
+              </Card.Header>
+              <Card.Body>
+                <Form.Group className="d-flex mt-3">
+                  <Form.Control
+                    type="text"
+                    placeholder="Write your query here"
+                    // value={newLocationName}
+                    // onChange={(e) =>
+                    //   this.setState({ newLocationName: e.target.value })
+                    // }
+                  />
+                  <Button
+                    variant="primary"
+                    className="ms-2"
+                    // onClick={this.handleLocationAdd}
+                  >
+                    Submit
+                  </Button>
+                </Form.Group>
+              </Card.Body>
+            </Card>
+            <Card className="mb-4">
               <Card.Header>
                 <h5>
                   <i className="fas fa-chart-pie me-2"></i>
