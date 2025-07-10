@@ -29,7 +29,7 @@ class Customer(models.Model):
         return f"{self.first_name} {self.last_name}"
     
 class LocationInfo(models.Model):
-    location_name = models.CharField(max_length=100, null=True)
+    location_name = models.CharField(max_length=100)
     def __str__(self):
         return self.location_name
 
