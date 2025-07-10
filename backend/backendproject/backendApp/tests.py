@@ -234,7 +234,7 @@ class CustomerAPITestCase(APITestCase):
             email='bob@example.com', phone='4445556666', customer_type='ISP',
             location=self.another_location
         )
-        self.list_url = reverse('customer-list-create')
+        self.list_url = reverse('customer-list')
         self.detail_url = reverse('customer-detail', kwargs={'pk': self.customer1.pk})
 
     def test_get_customer_list(self):
