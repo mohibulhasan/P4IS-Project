@@ -72,6 +72,50 @@ class HomeScreen extends React.Component {
         <Row>
           {/* Left Column */}
           <Col lg={8}>
+            <Row className="mb-4">
+              <Col md={6} lg={4} sm={12}>
+                <Card className="box-shadow">
+                  <Card.Header>Network Device Details</Card.Header>
+                  <Card.Body>
+                    <Button
+                      variant="primary"
+                      className="ms-2"
+                      onClick={() => alert("This is out of scope for now")}
+                    >
+                      Submit
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={6} lg={4} sm={12}>
+                <Card className="box-shadow">
+                  <Card.Header>Interface Details</Card.Header>
+                  <Card.Body>
+                    <Button
+                      variant="primary"
+                      className="ms-2"
+                      onClick={() => alert("This is out of scope for now")}
+                    >
+                      Submit
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={6} lg={4} sm={12}>
+                <Card className="box-shadow">
+                  <Card.Header>Goto Ticketing System</Card.Header>
+                  <Card.Body>
+                    <Button
+                      variant="primary"
+                      className="ms-2"
+                      onClick={() => alert("This is out of scope for now")}
+                    >
+                      Submit
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
             <Card className="mb-4">
               <Card.Header className="bg-success text-white">
                 <h5>Select a Network Device</h5>
