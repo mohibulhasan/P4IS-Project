@@ -8,6 +8,7 @@ import {
   Table,
   Button,
   Form,
+  Spinner,
 } from "react-bootstrap";
 import Calendar from "react-calendar";
 import "../bootstrap.min.css";
@@ -184,6 +185,44 @@ class HomeScreen extends React.Component {
               </Card.Body>
             </Card>
             <Card className="mb-4">
+              <Card.Header className="bg-success text-white">
+                <h5>Search Customers</h5>
+              </Card.Header>
+              <Card.Body>
+                <Form.Group className="d-flex mt-3">
+                  <Form.Control
+                    type="text"
+                    placeholder="Search customers (name, email, etc.)" // Updated placeholder
+                    value={searchTerm} // Bind to searchTerm state
+                    onChange={this.handleSearchChange} // new handler
+                  />
+                  <Button
+                    variant="primary"
+                    className="ms-2"
+                    // No need for a separate submit button, search is debounced
+                    onClick={() => this.fetchCustomers()}
+                  >
+                    Search
+                  </Button>
+                </Form.Group>
+                {/* New: Location Filter Dropdown */}
+                <Form.Group className="mt-3">
+                  <Form.Label>Filter by Location:</Form.Label>
+                  <Form.Select
+                    value={selectedLocationFilter}
+                    onChange={this.handleLocationFilterChange}
+                  >
+                    <option value="">All Locations</option>
+                    {locationData.map((loc) => (
+                      <option key={loc.id} value={loc.id}>
+                        {loc.location_name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Card.Body>
+            </Card>
+            <Card className="mb-4">
               <Card.Header>
                 <h5>
                   <i className="fas fa-chart-pie me-2"></i>
@@ -191,39 +230,47 @@ class HomeScreen extends React.Component {
                 </h5>
               </Card.Header>
               <Card.Body>
-                <Table striped bordered hover size="sm">
-                  <thead className="table-success">
-                    <tr>
-                      <th>First Name</th>
-                      <th>Last Name</th>
-                      <th>Organization</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Type</th>
-                      <th>Location</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {customerData.map((cust) => (
-                      <tr key={cust.id}>
-                        <td>{cust.first_name}</td>
-                        <td>{cust.last_name}</td>
-                        <td>{cust.organization}</td>
-                        <td>{cust.email}</td>
-                        <td>{cust.phone}</td>
-                        <td>{cust.customer_type}</td>
-                        <td>
-                          {locationData.find((loc) => loc.id === cust.location)
-                            ?.location_name || "N/A"}
-                        </td>
+                {loadingCustomers ? (
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                ) : customerError ? (
+                  <div className="text-danger">{customerError}</div>
+                ) : (
+                  <Table striped bordered hover size="sm">
+                    <thead className="table-success">
+                      <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Organization</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Type</th>
+                        <th>Location</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {customerData.map((cust) => (
+                        <tr key={cust.id}>
+                          <td>{cust.first_name}</td>
+                          <td>{cust.last_name}</td>
+                          <td>{cust.organization}</td>
+                          <td>{cust.email}</td>
+                          <td>{cust.phone}</td>
+                          <td>{cust.customer_type}</td>
+                          <td>
+                            {locationData.find(
+                              (loc) => loc.id === cust.location
+                            )?.location_name || "N/A"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                )}
               </Card.Body>
             </Card>
           </Col>
-
           {/* Right Column */}
           <Col lg={4}>
             <Card className="mb-4">
