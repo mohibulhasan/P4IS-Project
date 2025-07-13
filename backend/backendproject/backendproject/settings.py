@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'backendApp',  # My app name
     'rest_framework',  # Django REST Framework 
     'corsheaders',  # for CORS headers
+    'django-filters',  # for filtering functionality
 ]
 
 MIDDLEWARE = [

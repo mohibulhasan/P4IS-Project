@@ -13,6 +13,8 @@ import {
 import Calendar from "react-calendar";
 import "../bootstrap.min.css";
 
+const API_BASE_URL = "http://localhost:8000";
+
 class HomeScreen extends React.Component {
   state = {
     customerData: [],
@@ -27,6 +29,7 @@ class HomeScreen extends React.Component {
   };
 
   clockInterval = null;
+  searchTimeout = null;
 
   componentDidMount() {
     this.fetchCustomers();
@@ -35,6 +38,23 @@ class HomeScreen extends React.Component {
       () => this.setState({ currentTime: new Date() }),
       1000
     );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Only re-fetch customers if search term or location filter has changed
+    if (
+      prevState.searchTerm !== this.state.searchTerm ||
+      prevState.selectLocationFilter !== this.state.selectLocationFilter
+    ) {
+      // Clear any existing timeout to debounce the request
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout);
+      }
+      // Set a new timeout to fetch customers after a short delay
+      this.searchTimeout = setTimeout(() => {
+        this.fetchCustomers();
+      }, 300); // 300ms debounce delay
+    }
   }
 
   componentWillUnmount() {
@@ -55,7 +75,7 @@ class HomeScreen extends React.Component {
       params.append("location_id", this.state.selectLocationFilter);
     }
     axios
-      .get(`http://localhost:8000/customers/${params.toString()}`)
+      .get(`${API_BASE_URL}/customers/?${params.toString()}`)
       .then((res) =>
         this.setState({ customerData: res.data, loadingCustomers: false })
       )
@@ -70,7 +90,7 @@ class HomeScreen extends React.Component {
 
   fetchLocations = () => {
     axios
-      .get("http://localhost:8000/locations/")
+      .get(`${API_BASE_URL}/locations/`)
       .then((res) => this.setState({ locationData: res.data }))
       .catch((err) => console.error("Error fetching locations:", err));
   };
@@ -80,7 +100,7 @@ class HomeScreen extends React.Component {
     if (!newLocationName.trim()) return;
 
     axios
-      .post("http://localhost:8000/locations/", {
+      .post(`${API_BASE_URL}/locations/`, {
         location_name: newLocationName,
       })
       .then(() => {
@@ -90,7 +110,7 @@ class HomeScreen extends React.Component {
       .catch((err) => console.error("Error adding location:", err));
   };
 
-  handleSearch = (e) => {
+  handleSearchChange = (e) => {
     this.setState({ searchTerm: e.target.value });
   };
 
@@ -106,7 +126,7 @@ class HomeScreen extends React.Component {
       currentTime,
       date,
       searchTerm,
-      selectedLocationFilter,
+      selectLocationFilter,
       loadingCustomers,
       customerError,
     } = this.state;
@@ -199,7 +219,6 @@ class HomeScreen extends React.Component {
                   <Button
                     variant="primary"
                     className="ms-2"
-                    // No need for a separate submit button, search is debounced
                     onClick={() => this.fetchCustomers()}
                   >
                     Search
@@ -209,7 +228,7 @@ class HomeScreen extends React.Component {
                 <Form.Group className="mt-3">
                   <Form.Label>Filter by Location:</Form.Label>
                   <Form.Select
-                    value={selectedLocationFilter}
+                    value={selectLocationFilter}
                     onChange={this.handleLocationFilterChange}
                   >
                     <option value="">All Locations</option>
@@ -250,21 +269,29 @@ class HomeScreen extends React.Component {
                       </tr>
                     </thead>
                     <tbody>
-                      {customerData.map((cust) => (
-                        <tr key={cust.id}>
-                          <td>{cust.first_name}</td>
-                          <td>{cust.last_name}</td>
-                          <td>{cust.organization}</td>
-                          <td>{cust.email}</td>
-                          <td>{cust.phone}</td>
-                          <td>{cust.customer_type}</td>
-                          <td>
-                            {locationData.find(
-                              (loc) => loc.id === cust.location
-                            )?.location_name || "N/A"}
+                      {customerData.length > 0 ? (
+                        customerData.map((cust) => (
+                          <tr key={cust.id}>
+                            <td>{cust.first_name}</td>
+                            <td>{cust.last_name}</td>
+                            <td>{cust.organization}</td>
+                            <td>{cust.email}</td>
+                            <td>{cust.phone}</td>
+                            <td>{cust.customer_type}</td>
+                            <td>
+                              {locationData.find(
+                                (loc) => loc.id === cust.location
+                              )?.location_name || "N/A"}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="7" className="text-center">
+                            No customers found
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </Table>
                 )}
