@@ -3,14 +3,13 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
 from . models import *
 from . serializer import *
-from rest_framework.response import Response
+#from rest_framework.response import Response
 from .serializer import *
 from rest_framework import filters
+import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import CustomerFilter
 
-# # Handles POST requests separately
-# class EmployeeCreateView(CreateAPIView):
-#     queryset = Employee.objects.all()
-#     serializer_class = ReactSerializer
 
 # Handles GET, PUT, and DELETE requests with pk
 class EmployeeDetailView(RetrieveUpdateDestroyAPIView):
@@ -24,24 +23,25 @@ class EmployeeListCreateView(ListCreateAPIView):
 
 # customer view
 
-# class CustomerListCreateView(ListCreateAPIView):
-#     queryset = Customer.objects.all()
-#     serializer_class = CustomerSerializer
 
 class CustomerListCreateView(ListCreateAPIView):
     queryset = Customer.objects.all().order_by('first_name')  # Order by first_name
     serializer_class = CustomerSerializer
     
-    filter_backends = [filters.SearchFilter] # Enable search functionality
+    filter_backends = [filters.SearchFilter, django_filters.rest_framework.DjangoFilterBackend] # Enable search functionality
     search_fields = ['first_name', 'last_name', 'email', 'organization']  # Fields to search in
-    def get_queryset(self):
-        queryset = super().get_queryset()
+    
+    filterset_class = CustomerFilter  # Using custom filter class for filtering by location_id
+
+    
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
         
-        location_id = self.request.query_params.get('location_id')
-        if location_id is not None:
-            # 'location__id' refers to the id of the related LocationInfo model
-            queryset = queryset.filter(location__id=location_id)
-            return queryset
+    #     location_id = self.request.query_params.get('location_id')
+    #     if location_id is not None:
+    #         # 'location__id' refers to the id of the related LocationInfo model
+    #         queryset = queryset.filter(location__id=location_id)
+    #         return queryset
 
 class CustomerDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
