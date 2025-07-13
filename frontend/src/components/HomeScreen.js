@@ -19,7 +19,13 @@ class HomeScreen extends React.Component {
     newLocationName: "",
     currentTime: new Date(),
     date: new Date(),
+    searchTerm: "", // for searching with text
+    selectLocationFilter: "", // for filtering by location
+    loadingCustomers: false, // to show loading for customers
+    customerError: null,
   };
+
+  clockInterval = null;
 
   componentDidMount() {
     this.fetchCustomers();
@@ -32,13 +38,33 @@ class HomeScreen extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.clockInterval);
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout);
+    }
   }
 
   fetchCustomers = () => {
+    this.setState({ loadingCustomers: true, customerError: null });
+    // Query for customers from the backend
+    const params = new URLSearchParams();
+    if (this.state.searchTerm) {
+      params.append("search", this.state.searchTerm);
+    }
+    if (this.state.selectLocationFilter) {
+      params.append("location_id", this.state.selectLocationFilter);
+    }
     axios
-      .get("http://localhost:8000/customers/")
-      .then((res) => this.setState({ customerData: res.data }))
-      .catch((err) => console.error("Error fetching customer data:", err));
+      .get(`http://localhost:8000/customers/${params.toString()}`)
+      .then((res) =>
+        this.setState({ customerData: res.data, loadingCustomers: false })
+      )
+      .catch((err) => {
+        console.error("Error fetching customer data:", err);
+        this.setState({
+          customerError: "Failed to load customer data",
+          loadingCustomers: false,
+        });
+      });
   };
 
   fetchLocations = () => {
@@ -63,9 +89,26 @@ class HomeScreen extends React.Component {
       .catch((err) => console.error("Error adding location:", err));
   };
 
+  handleSearch = (e) => {
+    this.setState({ searchTerm: e.target.value });
+  };
+
+  handleLocationFilterChange = (e) => {
+    this.setState({ selectLocationFilter: e.target.value });
+  };
+
   render() {
-    const { customerData, locationData, newLocationName, currentTime, date } =
-      this.state;
+    const {
+      customerData,
+      locationData,
+      newLocationName,
+      currentTime,
+      date,
+      searchTerm,
+      selectedLocationFilter,
+      loadingCustomers,
+      customerError,
+    } = this.state;
 
     return (
       <Container className="mt-4">
